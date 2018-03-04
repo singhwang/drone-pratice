@@ -1,0 +1,48 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: drone-mysql
+  name: drone-mysql
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+  - port: 3306
+    targetPort: 3306
+    nodePort: 30008
+  selector:
+    app: drone-mysql
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: drone-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drone-mysql
+  template:
+    metadata:
+      name: drone-mysql
+      labels:
+        app: drone-mysql
+    spec:
+      containers:
+      - name: drone-mysql
+        imagePullPolicy: IfNotPresent
+        image: mysql:5.7.14
+        ports:
+        - name: drone 
+          containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: drone 
+        - name: MYSQL_USER
+          value: drone 
+        - name: MYSQL_PASSWORD
+          value: drone 

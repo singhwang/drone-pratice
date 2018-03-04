@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: cicd-golangdemo
+  name: cicd-golangdemo
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+  - port: 8000
+    targetPort: 8000
+    nodePort: 31439
+  selector:
+    app: cicd-golangdemo
